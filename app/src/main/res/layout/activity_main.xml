@@ -12,11 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/screen_shot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ScreenShot"/>
+    <!--<Button-->
+        <!--android:id="@+id/screen_shot"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"/>-->
 
 
     <!--<android.support.design.widget.FloatingActionButton-->
@@ -42,36 +41,58 @@
         <!--android:layout_gravity="right|bottom"-->
         <!--app:fabSize="mini"/>-->
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab_menu3"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_gravity="right|bottom"-->
-        <!--app:fabSize="mini"/>-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="120dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        app:fabSize="mini"/>
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab_menu4"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_gravity="right|bottom"-->
-        <!--app:fabSize="mini"/>-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/share"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="130dp"
+        android:layout_marginRight="55dp"
+        android:layout_marginEnd="55dp"
+        android:textSize="16sp"
+        android:padding="1dp"
+        android:background="@android:color/white"
+        android:textColor="@color/colorAccent" />
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_gravity="right|bottom|end"-->
-        <!--android:cropToPadding="true"-->
-        <!--android:scaleType="centerCrop"-->
-        <!--app:fabSize="normal"/>-->
-    <!---->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/screen_shot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        app:fabSize="mini"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/screen_shot"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="55dp"
+        android:layout_marginEnd="55dp"
+        android:textSize="16sp"
+        android:padding="1dp"
+        android:background="@android:color/white"
+        android:textColor="@color/colorAccent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        app:fabSize="normal"
+        android:layout_marginRight="5dp"/>
+
 </FrameLayout>
