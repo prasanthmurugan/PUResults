@@ -2,5 +2,5 @@
     <string name="app_name">PUResults</string>
     <string name="screen_shot">ScreenShot</string>
     <string name="share">Share</string>
-
+    <string name="refresh">Refresh</string>
 </resources>

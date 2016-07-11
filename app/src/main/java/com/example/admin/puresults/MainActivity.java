@@ -1,5 +1,6 @@
 package com.example.admin.puresults;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,12 +8,16 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -24,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
     WebView webView;
     String url = /*"http://www.pondiuni.edu.in/"*/"http://result.pondiuni.edu.in/candidate.asp";
-    FloatingActionButton screenShotBtn,shareBtn;
+    FloatingActionButton screenShotBtn,shareBtn,menuBtn;
     View rootView;
+    Animation fabAnimation;
+    TextView txtScreenShot,txtShare;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.web_view);
         screenShotBtn = (FloatingActionButton) findViewById(R.id.screen_shot);
         shareBtn = (FloatingActionButton) findViewById(R.id.share);
+        menuBtn = (FloatingActionButton) findViewById(R.id.fab_menu);
+        txtScreenShot = (TextView) findViewById(R.id.label_screenshot);
+        txtShare= (TextView)findViewById(R.id.label_share);
+        fabAnimation = AnimationUtils.loadAnimation(this,R.anim.clockwise);
+        screenShotBtn.setVisibility(View.GONE);
+        shareBtn.setVisibility(View.GONE);
+        txtScreenShot.setVisibility(View.GONE);
+        txtShare.setVisibility(View.GONE);
     }
 
     private void setUpDefaults() {
@@ -64,6 +79,20 @@ public class MainActivity extends AppCompatActivity {
                 screenShot(true);
             }
         });
+        menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtShare.setVisibility(View.VISIBLE);
+                txtScreenShot.setVisibility(View.VISIBLE);
+                shareBtn.setVisibility(View.VISIBLE);
+                screenShotBtn.setVisibility(View.VISIBLE);
+
+                shareBtn.setAnimation(fabAnimation);
+                screenShotBtn.setAnimation(fabAnimation);
+                txtScreenShot.setAnimation(fabAnimation);
+                txtShare.setAnimation(fabAnimation);
+            }
+        });
     }
 
     public void screenShot(boolean shareImage){
@@ -82,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 openShareOption(screenShot.getAbsolutePath());
             }else {
 //                addPicToGallery(this,screenShot.getAbsolutePath());
-                addPicUsingMount(screenShot.getAbsolutePath());
+//                addPicUsingMount(screenShot.getAbsolutePath());
+                addToMedia(screenShot.getAbsolutePath());
             }
 //            openScreenShot(screenShot);
         } catch (FileNotFoundException e) {
@@ -116,12 +146,10 @@ public class MainActivity extends AppCompatActivity {
                 null, new MediaScannerConnection.OnScanCompletedListener() {
 
                     public void onScanCompleted(String path, Uri uri)
-
                     {
 
 
                     }
-
                 });
     }
 
@@ -132,5 +160,14 @@ public class MainActivity extends AppCompatActivity {
         shareIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(new File(imgPath)));
         startActivity(Intent.createChooser(shareIntent,"Share Result"));
 
+    }
+
+    private void addToMedia(String filePath){
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        values.put(MediaStore.MediaColumns.DATA, filePath);
+        this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Toast.makeText(this,"ScreenShot added To Gallery",Toast.LENGTH_LONG).show();
     }
 }
