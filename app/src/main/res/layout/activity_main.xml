@@ -73,64 +73,79 @@
         <!--android:layout_gravity="right|bottom"-->
         <!--app:fabSize="mini"/>-->
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
-        android:layout_marginTop="120dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        app:fabSize="mini"/>
 
-    <TextView
-        android:id="@+id/label_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/share"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="130dp"
-        android:layout_marginRight="55dp"
-        android:layout_marginEnd="55dp"
-        android:textSize="16sp"
-        android:paddingLeft="1dp"
-        android:paddingRight="1dp"
-        android:background="@android:color/white"
-        android:textColor="@color/colorAccent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/screen_shot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="70dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        app:fabSize="mini"/>
-
-    <TextView
-        android:id="@+id/label_screenshot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/screen_shot"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="80dp"
-        android:layout_marginRight="55dp"
-        android:layout_marginEnd="55dp"
-        android:textSize="16sp"
-        android:paddingRight="1dp"
-        android:paddingLeft="1dp"
-        android:background="@android:color/white"
-        android:textColor="@color/colorAccent"/>
-
-    <android.support.design.widget.FloatingActionButton
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         app:fabSize="normal"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="end|top">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fabSize="mini"
+                android:layout_toRightOf="@+id/label_share"
+                android:layout_toEndOf="@+id/label_share"
+                app:fab_showAnimation="@anim/fab_scale_up"
+                app:fab_hideAnimation="@anim/fab_scale_down"/>
+
+            <TextView
+                android:id="@+id/label_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/share"
+                android:textSize="16sp"
+                android:padding="2dp"
+                android:background="@android:color/white"
+                android:textColor="@color/colorAccent"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="end|top">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/screen_shot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fabSize="mini"
+                android:layout_toRightOf="@+id/label_screenshot"
+                android:layout_toEndOf="@+id/label_screenshot"
+                app:fab_showAnimation="@anim/fab_scale_up"
+                app:fab_hideAnimation="@anim/fab_scale_down"/>
+
+            <TextView
+                android:id="@+id/label_screenshot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/screen_shot"
+                android:textSize="16sp"
+                android:padding="2dp"
+                android:background="@android:color/white"
+                android:textColor="@color/colorAccent"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        </com.github.clans.fab.FloatingActionMenu>
+
     </FrameLayout>
 
 </RelativeLayout>

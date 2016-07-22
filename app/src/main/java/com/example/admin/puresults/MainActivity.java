@@ -1,9 +1,11 @@
 package com.example.admin.puresults;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,14 +13,19 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jirbo.adcolony.AdColony;
+import com.jirbo.adcolony.AdColonyVideoAd;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,11 +40,14 @@ public class MainActivity extends AppCompatActivity {
     View rootView;
     Animation fabAnimation;
     TextView txtScreenShot,txtShare;
+    String clientOption = "version:1.0,store:google",app_Id="appa4b5cbd6ddec4e1bab",zone_id="vzc968fd674a92443b9b";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rootView = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
+        AdColony.configure(this,clientOption,app_Id,zone_id);
         init();
         setUpDefaults();
         setUpEvents();
@@ -45,16 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         webView = (WebView) findViewById(R.id.web_view);
-        screenShotBtn = (FloatingActionButton) findViewById(R.id.screen_shot);
-        shareBtn = (FloatingActionButton) findViewById(R.id.share);
         menuBtn = (FloatingActionButton) findViewById(R.id.fab_menu);
-        txtScreenShot = (TextView) findViewById(R.id.label_screenshot);
-        txtShare= (TextView)findViewById(R.id.label_share);
-        fabAnimation = AnimationUtils.loadAnimation(this,R.anim.clockwise);
-        screenShotBtn.setVisibility(View.GONE);
-        shareBtn.setVisibility(View.GONE);
-        txtScreenShot.setVisibility(View.GONE);
-        txtShare.setVisibility(View.GONE);
+
+//        screenShotBtn.setVisibility(View.GONE);
+//        shareBtn.setVisibility(View.GONE);
+//        txtScreenShot.setVisibility(View.GONE);
+//        txtShare.setVisibility(View.GONE);
     }
 
     private void setUpDefaults() {
@@ -62,37 +68,30 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setBuiltInZoomControls(true);
         webView.loadUrl(url);
+        //*AdColony
+        AdColonyVideoAd adColonyVideoAd = new AdColonyVideoAd();
+        adColonyVideoAd.show();
     }
 
     private void setUpEvents() {
-
-        screenShotBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                screenShot(false);
-            }
-        });
-
-        shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                screenShot(true);
-            }
-        });
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtShare.setVisibility(View.VISIBLE);
-                txtScreenShot.setVisibility(View.VISIBLE);
-                shareBtn.setVisibility(View.VISIBLE);
-                screenShotBtn.setVisibility(View.VISIBLE);
-
-                shareBtn.setAnimation(fabAnimation);
-                screenShotBtn.setAnimation(fabAnimation);
-                txtScreenShot.setAnimation(fabAnimation);
-                txtShare.setAnimation(fabAnimation);
+                showCustomDailog();
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AdColony.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AdColony.resume(this);
     }
 
     public void screenShot(boolean shareImage){
@@ -140,15 +139,9 @@ public class MainActivity extends AppCompatActivity {
 //        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.parse("file://"+path)));
         Toast.makeText(this,"ScreenShot added To Gallery",Toast.LENGTH_LONG).show();
         MediaScannerConnection.scanFile(this, new String[] {
-
                         path},
-
                 null, new MediaScannerConnection.OnScanCompletedListener() {
-
-                    public void onScanCompleted(String path, Uri uri)
-                    {
-
-
+                    public void onScanCompleted(String path, Uri uri) {
                     }
                 });
     }
@@ -159,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         shareIntent.setType("image/jpeg");
         shareIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(new File(imgPath)));
         startActivity(Intent.createChooser(shareIntent,"Share Result"));
-
     }
 
     private void addToMedia(String filePath){
@@ -170,4 +162,57 @@ public class MainActivity extends AppCompatActivity {
         this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Toast.makeText(this,"ScreenShot added To Gallery",Toast.LENGTH_LONG).show();
     }
+
+    public void showCustomDailog(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_layout);
+        dialog.setCanceledOnTouchOutside(true);
+
+        Window window = dialog.getWindow();
+        window.setBackgroundDrawable(new ColorDrawable(0));
+        window.setGravity(Gravity.TOP|Gravity.END);
+
+        FloatingActionButton menuBtn = (FloatingActionButton) dialog.findViewById(R.id.fab_menu);
+        screenShotBtn = (FloatingActionButton) dialog.findViewById(R.id.screen_shot);
+        shareBtn = (FloatingActionButton) dialog.findViewById(R.id.share);
+        txtScreenShot = (TextView) dialog.findViewById(R.id.label_screenshot);
+        txtShare = (TextView) dialog.findViewById(R.id.label_share);
+
+        txtShare.setVisibility(View.VISIBLE);
+        txtScreenShot.setVisibility(View.VISIBLE);
+        shareBtn.setVisibility(View.VISIBLE);
+        screenShotBtn.setVisibility(View.VISIBLE);
+
+        fabAnimation = AnimationUtils.loadAnimation(this,R.anim.clockwise);
+        shareBtn.setAnimation(fabAnimation);
+        screenShotBtn.setAnimation(fabAnimation);
+        txtScreenShot.setAnimation(fabAnimation);
+        txtShare.setAnimation(fabAnimation);
+
+        screenShotBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                screenShot(false);
+            }
+        });
+
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                screenShot(true);
+            }
+        });
+
+        menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
 }
+
+
