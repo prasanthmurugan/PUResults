@@ -1,29 +1,25 @@
 package com.example.admin.puresults;
 
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.jirbo.adcolony.AdColony;
 import com.jirbo.adcolony.AdColonyVideoAd;
 
@@ -36,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     WebView webView;
     String url = /*"http://www.pondiuni.edu.in/"*/"http://result.pondiuni.edu.in/candidate.asp";
-    FloatingActionButton screenShotBtn,shareBtn,menuBtn;
+    FloatingActionButton screenShotBtn,shareBtn;
+    FloatingActionMenu menuBtn;
     View rootView;
     Animation fabAnimation;
     TextView txtScreenShot,txtShare;
@@ -55,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         webView = (WebView) findViewById(R.id.web_view);
-        menuBtn = (FloatingActionButton) findViewById(R.id.fab_menu);
-
+        menuBtn = (FloatingActionMenu) findViewById(R.id.fab_menu);
+        screenShotBtn = (FloatingActionButton) findViewById(R.id.screen_shot);
+        shareBtn = (FloatingActionButton) findViewById(R.id.share);
 //        screenShotBtn.setVisibility(View.GONE);
 //        shareBtn.setVisibility(View.GONE);
 //        txtScreenShot.setVisibility(View.GONE);
@@ -77,7 +75,21 @@ public class MainActivity extends AppCompatActivity {
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCustomDailog();
+//                showCustomDailog();
+            }
+        });
+
+        screenShotBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                screenShot(false);
+            }
+        });
+
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                screenShot(true);
             }
         });
     }
@@ -163,56 +175,56 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,"ScreenShot added To Gallery",Toast.LENGTH_LONG).show();
     }
 
-    public void showCustomDailog(){
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_layout);
-        dialog.setCanceledOnTouchOutside(true);
-
-        Window window = dialog.getWindow();
-        window.setBackgroundDrawable(new ColorDrawable(0));
-        window.setGravity(Gravity.TOP|Gravity.END);
-
-        FloatingActionButton menuBtn = (FloatingActionButton) dialog.findViewById(R.id.fab_menu);
-        screenShotBtn = (FloatingActionButton) dialog.findViewById(R.id.screen_shot);
-        shareBtn = (FloatingActionButton) dialog.findViewById(R.id.share);
-        txtScreenShot = (TextView) dialog.findViewById(R.id.label_screenshot);
-        txtShare = (TextView) dialog.findViewById(R.id.label_share);
-
-        txtShare.setVisibility(View.VISIBLE);
-        txtScreenShot.setVisibility(View.VISIBLE);
-        shareBtn.setVisibility(View.VISIBLE);
-        screenShotBtn.setVisibility(View.VISIBLE);
-
-        fabAnimation = AnimationUtils.loadAnimation(this,R.anim.clockwise);
-        shareBtn.setAnimation(fabAnimation);
-        screenShotBtn.setAnimation(fabAnimation);
-        txtScreenShot.setAnimation(fabAnimation);
-        txtShare.setAnimation(fabAnimation);
-
-        screenShotBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                screenShot(false);
-            }
-        });
-
-        shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                screenShot(true);
-            }
-        });
-
-        menuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-
-    }
+//    public void showCustomDailog(){
+//        final Dialog dialog = new Dialog(this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.dialog_layout);
+//        dialog.setCanceledOnTouchOutside(true);
+//
+//        Window window = dialog.getWindow();
+//        window.setBackgroundDrawable(new ColorDrawable(0));
+//        window.setGravity(Gravity.TOP|Gravity.END);
+//
+//        FloatingActionMenu menuBtn = (FloatingActionMenu) dialog.findViewById(R.id.fab_menu);
+//        screenShotBtn = (FloatingActionButton) dialog.findViewById(R.id.screen_shot);
+//        shareBtn = (FloatingActionButton) dialog.findViewById(R.id.share);
+//        txtScreenShot = (TextView) dialog.findViewById(R.id.label_screenshot);
+//        txtShare = (TextView) dialog.findViewById(R.id.label_share);
+//
+//        txtShare.setVisibility(View.VISIBLE);
+//        txtScreenShot.setVisibility(View.VISIBLE);
+//        shareBtn.setVisibility(View.VISIBLE);
+//        screenShotBtn.setVisibility(View.VISIBLE);
+//
+//        fabAnimation = AnimationUtils.loadAnimation(this,R.anim.clockwise);
+//        shareBtn.setAnimation(fabAnimation);
+//        screenShotBtn.setAnimation(fabAnimation);
+//        txtScreenShot.setAnimation(fabAnimation);
+//        txtShare.setAnimation(fabAnimation);
+//
+//        screenShotBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                screenShot(false);
+//            }
+//        });
+//
+//        shareBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                screenShot(true);
+//            }
+//        });
+//
+//        menuBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//        dialog.show();
+//
+//    }
 }
 
 
