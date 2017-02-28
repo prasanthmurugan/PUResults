@@ -1,5 +1,6 @@
 package com.example.admin.puresults;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +12,14 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,14 +35,15 @@ import java.io.FileOutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    WebView webView;
-    String url = /*"http://www.pondiuni.edu.in/"*/"http://result.pondiuni.edu.in/candidate.asp";
-    FloatingActionButton screenShotBtn,shareBtn;
-    FloatingActionMenu menuBtn;
-    View rootView;
-    Animation fabAnimation;
-    TextView txtScreenShot,txtShare;
-    String clientOption = "version:1.0,store:google",app_Id="appa4b5cbd6ddec4e1bab",zone_id="vzc968fd674a92443b9b";
+    private WebView webView;
+    private String url = /*"http://www.pondiuni.edu.in/"*/"http://result.pondiuni.edu.in/candidate.asp";
+    private FloatingActionButton screenShotBtn,shareBtn;
+    private FloatingActionMenu menuBtn;
+    private View rootView;
+    private Animation fabAnimation;
+    private TextView txtScreenShot,txtShare;
+    private String clientOption = "version:1.0,store:google",app_Id="appa4b5cbd6ddec4e1bab",zone_id="vzc968fd674a92443b9b";
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         menuBtn = (FloatingActionMenu) findViewById(R.id.fab_menu);
         screenShotBtn = (FloatingActionButton) findViewById(R.id.screen_shot);
         shareBtn = (FloatingActionButton) findViewById(R.id.share);
+        progressBar = (ProgressBar) findViewById(R.id.progrees_bar);
 //        screenShotBtn.setVisibility(View.GONE);
 //        shareBtn.setVisibility(View.GONE);
 //        txtScreenShot.setVisibility(View.GONE);
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpDefaults() {
+        progressBar.setVisibility(View.VISIBLE);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setBuiltInZoomControls(true);
@@ -92,6 +100,15 @@ public class MainActivity extends AppCompatActivity {
                 screenShot(true);
             }
         });
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (view.getProgress() >= 80){
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -104,6 +121,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AdColony.resume(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.refresh,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     public void screenShot(boolean shareImage){

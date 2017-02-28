@@ -6,43 +6,49 @@
     android:layout_height="match_parent"
     tools:context="com.example.admin.puresults.MainActivity">
 
-    <RelativeLayout
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary">
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/title_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?actionBarSize"-->
+        <!--android:background="@color/colorPrimary">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/app_name"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:text="@string/app_name"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="20sp"-->
+            <!--android:textStyle="bold" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/refresh"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:text="@string/refresh"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="18sp" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_bar">
 
+        <ProgressBar
+            android:id="@+id/progrees_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
         <WebView
             android:id="@+id/web_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
 
         <com.github.clans.fab.FloatingActionMenu
@@ -55,7 +61,7 @@
             app:fab_hideAnimation="@anim/reverese_rotate"
             app:fab_showAnimation="@anim/rotate"
             app:menu_openDirection="down"
-            app:menu_shadowColor="#66000000" >
+            app:menu_shadowColor="#66000000">
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/share"
@@ -63,10 +69,10 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/label_share"
                 android:layout_toRightOf="@+id/label_share"
+                app:fabSize="mini"
                 app:fab_hideAnimation="@anim/fab_scale_down"
                 app:fab_label="@string/share"
-                app:fabSize="mini"
-                app:fab_showAnimation="@anim/fab_scale_up"/>
+                app:fab_showAnimation="@anim/fab_scale_up" />
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/screen_shot"
