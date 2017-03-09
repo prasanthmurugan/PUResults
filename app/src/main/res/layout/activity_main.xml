@@ -7,10 +7,28 @@
     android:layout_height="match_parent"
     tools:context="com.example.admin.puresults.MainActivity">
 
-    <WebView
-        android:id="@+id/web_view"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_internet_connection"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:padding="10dp"
+            android:background="@color/red"
+            android:visibility="visible"/>
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
 
     <com.github.clans.fab.FloatingActionMenu
@@ -22,7 +40,16 @@
         app:fab_hideAnimation="@anim/reverese_rotate"
         app:fab_showAnimation="@anim/rotate"
         app:menu_openDirection="down"
-        app:menu_fab_size="normal">
+        app:menu_fab_size="normal"
+        app:fab_showShadow="true"
+        app:menu_labels_showShadow="true"
+        app:menu_backgroundColor="#ccffffff"
+        app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        app:menu_colorNormal="@color/fab_menu_normal"
+        app:menu_colorPressed="@color/fab_menu_ripple"
+        app:menu_colorRipple="@color/fab_menu_ripple"
+        >
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/share"
@@ -32,7 +59,11 @@
             android:layout_toRightOf="@+id/label_share"
             app:fab_hideAnimation="@anim/fab_scale_down"
             app:fab_label="@string/share"
+            app:fab_size="mini"
             app:fab_showAnimation="@anim/fab_scale_up"
+            app:fab_colorNormal="@color/fab_btn_normal"
+            app:fab_colorPressed="@color/fab_btn_ripple"
+            app:fab_colorRipple="@color/fab_btn_ripple"
             android:src="@android:drawable/ic_menu_share"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -44,7 +75,11 @@
             app:fab_hideAnimation="@anim/fab_scale_down"
             app:fab_label="@string/screen_shot"
             app:fab_showAnimation="@anim/fab_scale_up"
-            android:src="@android:drawable/ic_menu_camera"/>
+            android:src="@android:drawable/ic_menu_camera"
+            app:fab_colorNormal="@color/fab_btn_normal"
+            app:fab_colorPressed="@color/fab_btn_ripple"
+            app:fab_colorRipple="@color/fab_btn_ripple"
+            app:fab_size="mini"/>
     </com.github.clans.fab.FloatingActionMenu>
 
 
