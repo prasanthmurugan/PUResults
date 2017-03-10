@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -215,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void screenShot(final boolean shareImage) {
-        final String path = this.getExternalCacheDir() + "/" + SystemClock.currentThreadTimeMillis() + ".jpg";
+        final String path = this.getExternalCacheDir() /*+File.pathSeparator+getString(R.string.result)*/+ "/" + SystemClock.currentThreadTimeMillis() + ".jpg";
      /*   webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.setInitialScale(0);
@@ -231,28 +233,35 @@ public class MainActivity extends AppCompatActivity {
                 webView.destroyDrawingCache();*/
       /*================*/
         webView.measure(View.MeasureSpec.makeMeasureSpec(
-                View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),webView.getHeight()
-                /*View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)*/);
-        webView.layout(0, 0, webView.getWidth(),
-                webView.getHeight());
+                View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)/*webView.getWidth()*/,/*webView.getHeight()*/
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        Log.d(TAG, "screenShot: current width:"+webView.getWidth()+"  Current Height"+webView.getHeight() +" webView.getScrollX(): "+webView.getScrollX()+" webView.getScrollY(): "+webView.getScrollY());
+        Log.d(TAG, "screenShot: Measured width:"+webView.getMeasuredWidth()+"  Measured Height"+webView.getMeasuredHeight());
+        webView.layout(0, /*0*/webView.getScrollY(), /*webView.getWidth()*/webView.getMeasuredWidth(),
+                webView.getHeight()+webView.getScrollY()/*webView.getMeasuredHeight()*/);
+        webView.scrollTo(webView.getScrollX(),webView.getScrollY());
         webView.setDrawingCacheEnabled(true);
         webView.buildDrawingCache();
+        Log.d(TAG, "After Layout current width:"+webView.getWidth()+"  Current Height"+(webView.getHeight()+webView.getScrollY()));
         Bitmap bitmap = Bitmap.createBitmap(webView.getWidth(),
-                webView.getHeight(), Bitmap.Config.ARGB_8888);
+                webView.getHeight()+webView.getScrollY(), Bitmap.Config.ARGB_8888);
 
         Canvas bigcanvas = new Canvas(bitmap);
         Paint paint = new Paint();
-        paint.setColor(ContextCompat.getColor(this,R.color.colorAccent));
+//        paint.setColor(ContextCompat.getColor(this,R.color.colorAccent));
         int iHeight = bitmap.getHeight();
         bigcanvas.drawBitmap(bitmap, 0, iHeight, paint);
         webView.draw(bigcanvas);
+        Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, webView.getScrollY(), webView.getWidth(), webView.getHeight());
+        webView.setDrawingCacheEnabled(false);
+//        webView.destroyDrawingCache();
       /*================*/
                 File screenShot = new File(path);
 //        File screenShot = new File(Environment.getExternalStoragePublicDirectory(
 //                Environment.DIRECTORY_PICTURES),""+"/"+ SystemClock.currentThreadTimeMillis()+".jpg");
                 try {
                     FileOutputStream fileOutputStream = new FileOutputStream(screenShot);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                    croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
                     if (shareImage) {
                         openShareOption(screenShot.getAbsolutePath());
                     } else {
@@ -321,6 +330,15 @@ public class MainActivity extends AppCompatActivity {
             // TODO: handle exception
         }*/
         return bitmap;
+    }
+
+    public void openPlayStore(){
+        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
 }
