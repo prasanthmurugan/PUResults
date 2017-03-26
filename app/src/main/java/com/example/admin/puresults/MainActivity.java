@@ -217,7 +217,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void screenShot(final boolean shareImage) {
-        final String path = this.getExternalCacheDir() /*+File.pathSeparator+getString(R.string.result)*/+ "/" + SystemClock.currentThreadTimeMillis() + ".jpg";
+        File dirFile = new File(this.getExternalCacheDir() +"/"+getString(R.string.result));
+        if (!dirFile.exists()){
+            dirFile.mkdirs();
+        }
+//        final String path = dirFile.getAbsolutePath()+ "/" + SystemClock.currentThreadTimeMillis() + ".jpg";
+
      /*   webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.setInitialScale(0);
@@ -256,22 +261,28 @@ public class MainActivity extends AppCompatActivity {
         webView.setDrawingCacheEnabled(false);
 //        webView.destroyDrawingCache();
       /*================*/
-                File screenShot = new File(path);
+
+        File screenShot = new File( dirFile.getAbsolutePath(),SystemClock.currentThreadTimeMillis() + ".jpg");
+        Log.d(TAG, "screenShot: path=>"+screenShot.getAbsolutePath());
+
 //        File screenShot = new File(Environment.getExternalStoragePublicDirectory(
 //                Environment.DIRECTORY_PICTURES),""+"/"+ SystemClock.currentThreadTimeMillis()+".jpg");
-                try {
-                    FileOutputStream fileOutputStream = new FileOutputStream(screenShot);
-                    croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-                    if (shareImage) {
-                        openShareOption(screenShot.getAbsolutePath());
-                    } else {
-                        addToMedia(screenShot.getAbsolutePath());
-                    }
+        try {
+                   /* if (!screenShot.exists()){
+                        screenShot.createNewFile();
+                    }*/
+            FileOutputStream fileOutputStream = new FileOutputStream(screenShot);
+            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+            if (shareImage) {
+                openShareOption(screenShot.getAbsolutePath());
+            } else {
+                addToMedia(screenShot.getAbsolutePath());
+            }
 //            openScreenShot(screenShot);
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
          /*   }
         }, 500);*/
     }
